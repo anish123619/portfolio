@@ -7,24 +7,28 @@
     <title>Tamang Anish | Portfolio</title>
     <style>
         :root {
-            --bg: #07080a;
-            --panel: #101216;
-            --line: #23262d;
-            --text: #e8e8ea;
-            --muted: #8a8f98;
-            --danger: #ff2d2d;
-            --warn: #ffc400;
+            --bg: #0b0a09;
+            --panel: #14110f;
+            --line: #2c2520;
+            --text: #f1ece6;
+            --muted: #9a8f85;
+            --red: #ff2d2d;
+            --orange: #ff7a00;
+            --amber: #ffc400;
             --cyan: #00e5ff;
+            --fire: linear-gradient(90deg, #ff2d2d, #ff7a00, #ffc400, #ff2d2d);
+            --tape: repeating-linear-gradient(-45deg, #ffc400 0 8px, #111 8px 16px);
         }
 
         * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 110px; }
 
         body {
             margin: 0;
-            padding-top: 20px;
             background:
-                radial-gradient(ellipse at 50% -10%, rgba(255, 45, 45, 0.18), transparent 60%),
+                linear-gradient(rgba(255, 122, 0, 0.035) 1px, transparent 1px) 0 0 / 100% 48px,
+                radial-gradient(ellipse at 80% -10%, rgba(255, 45, 45, 0.22), transparent 55%),
+                radial-gradient(ellipse at 0% 40%, rgba(255, 122, 0, 0.08), transparent 50%),
                 var(--bg);
             color: var(--text);
             font-family: "Consolas", "SF Mono", "Courier New", monospace;
@@ -32,28 +36,7 @@
             overflow-x: hidden;
         }
 
-        /* Hazard tape across the top */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 20px;
-            background: repeating-linear-gradient(-45deg, var(--warn) 0 16px, #111 16px 32px);
-            box-shadow: 0 4px 24px rgba(255, 196, 0, 0.35);
-            z-index: 30;
-        }
-
-        /* CRT scanlines */
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px);
-            pointer-events: none;
-            z-index: 25;
-        }
-
-        .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+        .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
 
         a:focus-visible, .btn:focus-visible {
             outline: 3px solid var(--cyan);
@@ -63,11 +46,11 @@
         /* Top bar */
         .topbar {
             position: sticky;
-            top: 20px;
+            top: 0;
             z-index: 20;
-            background: rgba(7, 8, 10, 0.88);
+            background: rgba(11, 10, 9, 0.9);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--line);
+            border-bottom: 2px solid var(--red);
         }
         .topbar .wrap {
             display: flex;
@@ -77,45 +60,79 @@
         }
         .brand {
             color: var(--text);
-            font-weight: 800;
+            font-weight: 900;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-        .brand::before { content: "\25B6  "; color: var(--danger); }
-        nav { display: flex; gap: 22px; }
-        nav a {
-            color: var(--muted);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
-        nav a:hover { color: var(--warn); }
+        .brand::before { content: "\2622  "; color: var(--amber); }
+        nav { display: flex; gap: 8px; }
+        nav a {
+            padding: 6px 14px;
+            color: var(--muted);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: 1px solid transparent;
+            transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+        nav a:hover {
+            color: #000;
+            background: var(--amber);
+            border-color: var(--amber);
+        }
+
+        /* Scrolling warning ticker */
+        .ticker {
+            overflow: hidden;
+            background: var(--tape);
+            border-bottom: 2px solid #000;
+        }
+        .ticker div {
+            display: inline-block;
+            padding: 4px 0;
+            white-space: nowrap;
+            background: #111;
+            color: var(--amber);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            animation: scroll 28s linear infinite;
+        }
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
 
         /* Hero */
         .hero {
             display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 60px;
+            grid-template-columns: 1fr 360px;
+            gap: 64px;
             align-items: center;
-            padding: 64px 0 72px;
+            padding: 72px 0 80px;
         }
 
         .photo-frame {
             position: relative;
-            width: 340px;
+            width: 360px;
             aspect-ratio: 4 / 5;
+            order: 2;
             animation: rise 0.7s ease-out both;
         }
         .photo-frame::before {
             content: "";
             position: absolute;
             inset: 0;
-            transform: translate(16px, 16px);
-            background: repeating-linear-gradient(-45deg, var(--danger) 0 14px, #1a0505 14px 28px);
-            box-shadow: 0 0 40px rgba(255, 45, 45, 0.45);
+            transform: translate(-18px, 18px);
+            background: var(--fire);
+            background-size: 200% 100%;
+            clip-path: polygon(0 0, 88% 0, 100% 12%, 100% 100%, 12% 100%, 0 88%);
+            box-shadow: 0 0 40px rgba(255, 45, 45, 0.5);
+            animation: shift 4s ease-in-out infinite;
         }
         .profile-img {
             position: relative;
@@ -123,81 +140,115 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border: 3px solid var(--text);
             background: var(--panel);
-            filter: contrast(1.08) saturate(0.95);
+            clip-path: polygon(0 0, 88% 0, 100% 12%, 100% 100%, 12% 100%, 0 88%);
+            filter: contrast(1.1) saturate(1.05);
         }
         .photo-frame::after {
-            content: "ID // 202X";
+            content: "SUBJECT // ANISH";
             position: absolute;
-            left: 0;
-            bottom: 0;
-            padding: 4px 10px;
-            background: var(--danger);
+            right: 0;
+            bottom: -34px;
+            padding: 3px 10px;
+            background: var(--amber);
             color: #000;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            display: none;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
         }
 
         @keyframes rise {
             from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: none; }
+            to   { opacity: 1; transform: none; }
+        }
+        @keyframes shift {
+            0%, 100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
         }
 
-        /* Glitching name */
-        .hero-text h1 {
+        /* Fire / glitch headline (your h1 style) */
+        h1 {
             position: relative;
-            margin: 0 0 14px;
-            font-size: clamp(2.4rem, 7vw, 4rem);
+            display: inline-block;
+            margin: 0 0 24px;
+            padding-bottom: 18px;
+            font-size: clamp(2.2rem, 7vw, 4.2rem);
             font-weight: 900;
-            line-height: 1.02;
+            line-height: 1.05;
             letter-spacing: -0.02em;
             text-transform: uppercase;
-            text-shadow: 0 0 18px rgba(255, 45, 45, 0.55);
+            background: var(--fire);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 14px rgba(255, 45, 45, 0.55));
+            animation: shift 4s ease-in-out infinite;
         }
-        .hero-text h1::before,
-        .hero-text h1::after {
+        h1::before {
             content: attr(data-text);
             position: absolute;
-            inset: 0;
-            overflow: hidden;
+            top: 0;
+            left: 0;
+            background: none;
+            -webkit-text-fill-color: var(--cyan);
+            color: var(--cyan);
+            animation: glitch 3.2s infinite steps(1);
         }
-        .hero-text h1::before { color: var(--cyan); text-shadow: none; animation: glitch-a 3.2s infinite steps(1); }
-        .hero-text h1::after  { color: var(--danger); text-shadow: none; animation: glitch-b 3.2s infinite steps(1); }
+        h1::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--tape);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: draw 0.9s 0.3s ease-out forwards;
+        }
+        h1 span {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.3em;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            -webkit-text-fill-color: var(--muted);
+            color: var(--muted);
+        }
+        h1 span::before {
+            content: "// ";
+            -webkit-text-fill-color: var(--red);
+            color: var(--red);
+        }
 
-        @keyframes glitch-a {
+        @keyframes glitch {
             0%, 90%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
             91% { transform: translate(-4px, 1px); clip-path: inset(10% 0 60% 0); }
             94% { transform: translate(3px, -1px); clip-path: inset(55% 0 15% 0); }
             97% { transform: translate(-2px, 0); clip-path: inset(30% 0 40% 0); }
         }
-        @keyframes glitch-b {
-            0%, 88%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
-            89% { transform: translate(4px, -1px); clip-path: inset(60% 0 10% 0); }
-            93% { transform: translate(-3px, 1px); clip-path: inset(5% 0 70% 0); }
-            96% { transform: translate(2px, 0); clip-path: inset(40% 0 30% 0); }
-        }
+        @keyframes draw { to { transform: scaleX(1); } }
 
         .role {
-            margin: 0 0 18px;
-            color: var(--warn);
+            margin: 0 0 16px;
+            color: var(--amber);
             font-size: 1.1rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
         .intro {
-            margin: 0 0 30px;
+            margin: 0 0 32px;
             max-width: 46ch;
             color: var(--muted);
         }
-        .intro::before { content: "> "; color: var(--danger); font-weight: 700; }
+        .intro::before { content: "$ "; color: var(--red); font-weight: 800; }
         .intro::after {
-            content: "_";
-            margin-left: 2px;
-            color: var(--danger);
+            content: "\2588";
+            margin-left: 4px;
+            color: var(--orange);
             animation: blink 1s steps(1) infinite;
         }
         @keyframes blink { 50% { opacity: 0; } }
@@ -205,136 +256,186 @@
         .actions { display: flex; flex-wrap: wrap; gap: 14px; }
         .btn {
             display: inline-block;
-            padding: 12px 24px;
-            font-weight: 800;
+            padding: 13px 26px;
+            font-weight: 900;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            border: 2px solid var(--danger);
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            letter-spacing: 0.1em;
+            border: 2px solid var(--orange);
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
             transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
         }
-        .btn.primary { background: var(--danger); color: #000; }
-        .btn.ghost { background: transparent; color: var(--danger); }
-        .btn:hover { transform: translateY(-2px); background: var(--warn); border-color: var(--warn); color: #000; }
+        .btn.primary { background: var(--fire); background-size: 200% 100%; color: #000; border-color: transparent; }
+        .btn.ghost { background: transparent; color: var(--orange); }
+        .btn:hover { transform: translateY(-3px); background: var(--amber); border-color: var(--amber); color: #000; }
 
-        /* Sections */
-        section.block { padding: 52px 0; border-top: 1px dashed var(--line); }
+        /* Numbered sections */
+        main { counter-reset: sec; }
+        section.block {
+            counter-increment: sec;
+            padding: 56px 0;
+            border-top: 1px solid var(--line);
+        }
         h2 {
             position: relative;
             display: inline-block;
-            margin: 0 0 22px;
-            padding-bottom: 8px;
-            font-size: 1.5rem;
+            margin: 0 0 26px;
+            padding: 0 0 10px 62px;
+            font-size: 1.6rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.04em;
+            background: var(--fire);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shift 6s ease-in-out infinite;
+        }
+        h2::before {
+            content: "0" counter(sec);
+            position: absolute;
+            left: 0;
+            top: 0;
+            -webkit-text-fill-color: var(--red);
+            color: var(--red);
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
         }
         h2::after {
             content: "";
             position: absolute;
-            left: 0; bottom: 0;
+            left: 0;
+            bottom: 0;
             width: 100%;
-            height: 6px;
-            background: repeating-linear-gradient(-45deg, var(--warn) 0 6px, #111 6px 12px);
+            height: 5px;
+            background: var(--tape);
         }
-        .about p { margin: 0; max-width: 68ch; color: #c9ccd2; }
+        .about p { margin: 0; max-width: 68ch; color: #d3cbc3; }
 
         .skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             margin: 0;
             padding: 0;
             list-style: none;
         }
         .skills li {
-            padding: 8px 18px;
+            padding: 10px 20px;
             background: var(--panel);
-            border: 1px solid var(--danger);
-            color: var(--text);
-            font-weight: 700;
-            box-shadow: 0 0 14px rgba(255, 45, 45, 0.25);
+            border: 1px solid var(--orange);
+            font-weight: 800;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            transition: background 0.15s ease, color 0.15s ease;
         }
-        .skills li::before { content: "\26A0  "; color: var(--warn); }
+        .skills li::before { content: "\25B2  "; color: var(--amber); font-size: 0.8em; }
+        .skills li:hover { background: var(--amber); color: #000; }
+        .skills li:hover::before { color: var(--red); }
 
         .projects {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
             margin: 0;
             padding: 0;
             list-style: none;
+            counter-reset: proj;
         }
         .projects li {
+            position: relative;
+            counter-increment: proj;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            padding: 24px;
+            padding: 28px 24px 24px;
             background: var(--panel);
             border: 1px solid var(--line);
-            border-left: 6px solid var(--danger);
-            border-radius: 4px;
             transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
         }
+        /* corner brackets */
+        .projects li::before,
+        .projects li::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 3px solid var(--red);
+            transition: border-color 0.18s ease;
+        }
+        .projects li::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+        .projects li::after  { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
         .projects li:hover,
         .projects li:focus-within {
-            transform: translateY(-4px);
-            border-left-color: var(--warn);
-            box-shadow: 0 0 28px rgba(255, 45, 45, 0.45);
+            transform: translateY(-5px);
+            border-color: var(--orange);
+            box-shadow: 0 0 30px rgba(255, 90, 0, 0.4);
         }
+        .projects li:hover::before, .projects li:hover::after,
+        .projects li:focus-within::before, .projects li:focus-within::after { border-color: var(--amber); }
         .projects strong {
-            color: var(--danger);
-            font-size: 0.8rem;
-            letter-spacing: 0.14em;
+            color: var(--red);
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
         }
-        .projects .title { font-size: 1.25rem; font-weight: 800; }
-        .projects p { margin: 0 0 12px; color: var(--muted); }
+        .projects .title { font-size: 1.25rem; font-weight: 900; }
+        .projects p { margin: 0 0 14px; color: var(--muted); }
         .projects a.open {
             margin-top: auto;
             align-self: flex-start;
-            color: var(--warn);
+            color: var(--amber);
             font-weight: 800;
             text-decoration: none;
-            border-bottom: 2px solid var(--warn);
+            border-bottom: 2px solid var(--amber);
         }
-        .projects a.open::after { content: "  \2192"; }
-        .projects a.open:hover { color: var(--danger); border-color: var(--danger); }
+        .projects a.open::after {
+            content: "  \2192";
+            position: static;
+            width: auto;
+            height: auto;
+            border: 0;
+        }
+        .projects a.open:hover { color: var(--red); border-color: var(--red); }
 
         footer {
-            padding: 32px 0 48px;
-            border-top: 1px dashed var(--line);
+            padding: 36px 0 52px;
+            border-top: 6px solid transparent;
+            border-image: var(--tape) 6;
             color: var(--muted);
-            font-size: 0.85rem;
-            letter-spacing: 0.06em;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+        footer::before { content: "\26A0  "; color: var(--amber); }
 
         @media (prefers-reduced-motion: reduce) {
-            .photo-frame { animation: none; }
-            .hero-text h1::before, .hero-text h1::after { display: none; animation: none; }
-            .intro::after { animation: none; }
-            .btn, .projects li { transition: none; }
+            .ticker div, h1, h2, .photo-frame, .photo-frame::before, .intro::after { animation: none; }
+            h1::before { display: none; }
+            h1::after { animation: none; transform: scaleX(1); }
+            nav a, .btn, .skills li, .projects li { transition: none; }
             html { scroll-behavior: auto; }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 820px) {
             .hero {
                 grid-template-columns: 1fr;
-                gap: 44px;
-                padding: 40px 0 48px;
+                gap: 64px;
+                padding: 44px 0 56px;
                 text-align: center;
                 justify-items: center;
             }
-            .photo-frame { width: min(300px, 78vw); margin-right: 16px; }
+            .photo-frame { order: 0; width: min(300px, 78vw); margin-left: 18px; }
+            .photo-frame::after { right: 50%; transform: translateX(50%); white-space: nowrap; }
             .intro { margin-left: auto; margin-right: auto; }
             .actions { justify-content: center; }
         }
         @media (max-width: 480px) {
-            nav { gap: 14px; }
             .brand { display: none; }
             .topbar .wrap { justify-content: center; }
+            nav a { padding: 6px 10px; }
+            h2 { padding-left: 52px; font-size: 1.35rem; }
             .projects li:hover, .projects li:focus-within { transform: none; }
         }
     </style>
@@ -352,6 +453,13 @@
         </div>
     </div>
 
+    <div class="ticker" aria-hidden="true">
+        <div>
+            &#9888; Portfolio online &nbsp;&nbsp;&#9888; Computer Engineering &nbsp;&nbsp;&#9888; Gachon University &nbsp;&nbsp;&#9888; Web development in progress &nbsp;&nbsp;
+            &#9888; Portfolio online &nbsp;&nbsp;&#9888; Computer Engineering &nbsp;&nbsp;&#9888; Gachon University &nbsp;&nbsp;&#9888; Web development in progress &nbsp;&nbsp;
+        </div>
+    </div>
+
     <div class="wrap" id="top">
 
         <!-- Hero Section -->
@@ -360,7 +468,7 @@
                 <img src="anish.jpeg" alt="Profile photo of Tamang Anish" class="profile-img">
             </div>
             <div class="hero-text">
-                <h1 data-text="Tamang Anish">Tamang Anish</h1>
+                <h1 data-text="Tamang Anish">Tamang Anish <span>2026/11/09</span></h1>
                 <p class="role">Computer Engineering, Gachon University</p>
                 <p class="intro">I build responsive web applications and enjoy learning new tools along the way.</p>
                 <div class="actions">
