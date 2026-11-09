@@ -3,73 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <meta name="description" content="Portfolio of Tamang Anish, computer engineering student at Gachon University.">
+    <title>Tamang Anish | Portfolio</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
+        :root {
+            --bg: #07080a;
+            --panel: #101216;
+            --line: #23262d;
+            --text: #e8e8ea;
+            --muted: #8a8f98;
+            --danger: #ff2d2d;
+            --warn: #ffc400;
+            --cyan: #00e5ff;
         }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+        body {
+            margin: 0;
+            padding-top: 20px;
+            background:
+                radial-gradient(ellipse at 50% -10%, rgba(255, 45, 45, 0.18), transparent 60%),
+                var(--bg);
+            color: var(--text);
+            font-family: "Consolas", "SF Mono", "Courier New", monospace;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* Hazard tape across the top */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 20px;
+            background: repeating-linear-gradient(-45deg, var(--warn) 0 16px, #111 16px 32px);
+            box-shadow: 0 4px 24px rgba(255, 196, 0, 0.35);
+            z-index: 30;
+        }
+
+        /* CRT scanlines */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px);
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+        a:focus-visible, .btn:focus-visible {
+            outline: 3px solid var(--cyan);
+            outline-offset: 3px;
+        }
+
+        /* Top bar */
+        .topbar {
+            position: sticky;
+            top: 20px;
+            z-index: 20;
+            background: rgba(7, 8, 10, 0.88);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+        .topbar .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 58px;
+        }
+        .brand {
+            color: var(--text);
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .brand::before { content: "\25B6  "; color: var(--danger); }
+        nav { display: flex; gap: 22px; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        nav a:hover { color: var(--warn); }
+
+        /* Hero */
+        .hero {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 64px 0 72px;
+        }
+
+        .photo-frame {
+            position: relative;
+            width: 340px;
+            aspect-ratio: 4 / 5;
+            animation: rise 0.7s ease-out both;
+        }
+        .photo-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translate(16px, 16px);
+            background: repeating-linear-gradient(-45deg, var(--danger) 0 14px, #1a0505 14px 28px);
+            box-shadow: 0 0 40px rgba(255, 45, 45, 0.45);
         }
         .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            margin-bottom: 15px;
+            border: 3px solid var(--text);
+            background: var(--panel);
+            filter: contrast(1.08) saturate(0.95);
         }
-        section {
-            margin-bottom: 30px;
+        .photo-frame::after {
+            content: "ID // 202X";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 4px 10px;
+            background: var(--danger);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            display: none;
         }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* Glitching name */
+        .hero-text h1 {
+            position: relative;
+            margin: 0 0 14px;
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            font-weight: 900;
+            line-height: 1.02;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            text-shadow: 0 0 18px rgba(255, 45, 45, 0.55);
+        }
+        .hero-text h1::before,
+        .hero-text h1::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .hero-text h1::before { color: var(--cyan); text-shadow: none; animation: glitch-a 3.2s infinite steps(1); }
+        .hero-text h1::after  { color: var(--danger); text-shadow: none; animation: glitch-b 3.2s infinite steps(1); }
+
+        @keyframes glitch-a {
+            0%, 90%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
+            91% { transform: translate(-4px, 1px); clip-path: inset(10% 0 60% 0); }
+            94% { transform: translate(3px, -1px); clip-path: inset(55% 0 15% 0); }
+            97% { transform: translate(-2px, 0); clip-path: inset(30% 0 40% 0); }
+        }
+        @keyframes glitch-b {
+            0%, 88%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
+            89% { transform: translate(4px, -1px); clip-path: inset(60% 0 10% 0); }
+            93% { transform: translate(-3px, 1px); clip-path: inset(5% 0 70% 0); }
+            96% { transform: translate(2px, 0); clip-path: inset(40% 0 30% 0); }
+        }
+
+        .role {
+            margin: 0 0 18px;
+            color: var(--warn);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .intro {
+            margin: 0 0 30px;
+            max-width: 46ch;
+            color: var(--muted);
+        }
+        .intro::before { content: "> "; color: var(--danger); font-weight: 700; }
+        .intro::after {
+            content: "_";
+            margin-left: 2px;
+            color: var(--danger);
+            animation: blink 1s steps(1) infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 2px solid var(--danger);
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+        }
+        .btn.primary { background: var(--danger); color: #000; }
+        .btn.ghost { background: transparent; color: var(--danger); }
+        .btn:hover { transform: translateY(-2px); background: var(--warn); border-color: var(--warn); color: #000; }
+
+        /* Sections */
+        section.block { padding: 52px 0; border-top: 1px dashed var(--line); }
         h2 {
-            border-bottom: 2px solid #eaeaea;
-            padding-bottom: 5px;
+            position: relative;
+            display: inline-block;
+            margin: 0 0 22px;
+            padding-bottom: 8px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
-        ul {
-            list-style-type: square;
+        h2::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 100%;
+            height: 6px;
+            background: repeating-linear-gradient(-45deg, var(--warn) 0 6px, #111 6px 12px);
+        }
+        .about p { margin: 0; max-width: 68ch; color: #c9ccd2; }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .skills li {
+            padding: 8px 18px;
+            background: var(--panel);
+            border: 1px solid var(--danger);
+            color: var(--text);
+            font-weight: 700;
+            box-shadow: 0 0 14px rgba(255, 45, 45, 0.25);
+        }
+        .skills li::before { content: "\26A0  "; color: var(--warn); }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 22px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .projects li {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 24px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-left: 6px solid var(--danger);
+            border-radius: 4px;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+        .projects li:hover,
+        .projects li:focus-within {
+            transform: translateY(-4px);
+            border-left-color: var(--warn);
+            box-shadow: 0 0 28px rgba(255, 45, 45, 0.45);
+        }
+        .projects strong {
+            color: var(--danger);
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .projects .title { font-size: 1.25rem; font-weight: 800; }
+        .projects p { margin: 0 0 12px; color: var(--muted); }
+        .projects a.open {
+            margin-top: auto;
+            align-self: flex-start;
+            color: var(--warn);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid var(--warn);
+        }
+        .projects a.open::after { content: "  \2192"; }
+        .projects a.open:hover { color: var(--danger); border-color: var(--danger); }
+
+        footer {
+            padding: 32px 0 48px;
+            border-top: 1px dashed var(--line);
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .photo-frame { animation: none; }
+            .hero-text h1::before, .hero-text h1::after { display: none; animation: none; }
+            .intro::after { animation: none; }
+            .btn, .projects li { transition: none; }
+            html { scroll-behavior: auto; }
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 44px;
+                padding: 40px 0 48px;
+                text-align: center;
+                justify-items: center;
+            }
+            .photo-frame { width: min(300px, 78vw); margin-right: 16px; }
+            .intro { margin-left: auto; margin-right: auto; }
+            .actions { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            nav { gap: 14px; }
+            .brand { display: none; }
+            .topbar .wrap { justify-content: center; }
+            .projects li:hover, .projects li:focus-within { transform: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Hero Section -->
-    <header>
-        <img src="anish.jpeg" alt="Profile Photo" class="profile-img">
-        <h1>Tamang Anish</h1>
-        <p>Computer Engineering-Gachon University.</p>
-    </header>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="#top">Tamang Anish</a>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+            </nav>
+        </div>
+    </div>
 
-    <!-- Bio Section -->
-    <section>
-        <h2>About Me</h2>
-        <p>Hello! I am Tamang Anish(202637595) a passionate computer engineering student studying in Gachon University, focusing on learning modern web development, building responsive applications, and continuously expanding my technical skill set.</p>
-    </section>
+    <div class="wrap" id="top">
 
-    <!-- Skills Section -->
-    <section>
-        <h2>Skills</h2>
-        <ul>
-            <li>HTML, CSS, JavaScript</li>
-            <li>Python Programming</li>
-            <li>Git & GitHub Version Control</li>
-        </ul>
-    </section>
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="photo-frame">
+                <img src="anish.jpeg" alt="Profile photo of Tamang Anish" class="profile-img">
+            </div>
+            <div class="hero-text">
+                <h1 data-text="Tamang Anish">Tamang Anish</h1>
+                <p class="role">Computer Engineering, Gachon University</p>
+                <p class="intro">I build responsive web applications and enjoy learning new tools along the way.</p>
+                <div class="actions">
+                    <a class="btn primary" href="#projects">View projects</a>
+                    <a class="btn ghost" href="https://github.com/anish123619" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+        </header>
 
-    <!-- Course Projects Section -->
-    <section>
-        <h2>Course Projects</h2>
-        <ul>
-            <li><strong>Project 1:</strong> <a href="https://anish123619.github.io/web-programming/week07/book-finder.html" target="_blank">Book Finder</a> - A web app built to search and manage books.</li>
-            <li><strong>Project 2:</strong> <a href="https://anish123619.github.io/web-programming/team-project/team-project.html" target="_blank">web Chat</a> - A website built to chat and communication.</li>
-            
-        </ul>
-    </section>
+        <main>
+            <!-- Bio Section -->
+            <section class="block about" id="about">
+                <h2>About Me</h2>
+                <p>Hello! I'm Tamang Anish, a passionate computer engineering student at Gachon University. I'm focused on modern web development, building responsive applications, and continuously expanding my technical skill set.</p>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="block" id="skills">
+                <h2>Skills</h2>
+                <ul class="skills">
+                    <li>HTML, CSS, JavaScript</li>
+                    <li>Python Programming</li>
+                    <li>Git &amp; GitHub Version Control</li>
+                </ul>
+            </section>
+
+            <!-- Course Projects Section -->
+            <section class="block" id="projects">
+                <h2>Course Projects</h2>
+                <ul class="projects">
+                    <li>
+                        <strong>Project 1</strong>
+                        <span class="title">Book Finder</span>
+                        <p>A web app for searching and managing books.</p>
+                        <a class="open" href="https://anish123619.github.io/web-programming/week07/book-finder.html" target="_blank" rel="noopener noreferrer">Open Book Finder</a>
+                    </li>
+                    <li>
+                        <strong>Project 2</strong>
+                        <span class="title">Web Chat</span>
+                        <p>A website for chat and communication.</p>
+                        <a class="open" href="https://anish123619.github.io/web-programming/team-project/team-project.html" target="_blank" rel="noopener noreferrer">Open Web Chat</a>
+                    </li>
+                    <li>
+                        <strong>Project 3</strong>
+                        <span class="title">My github live.</span>
+                        <p>My web-programming repo.</p>
+                        <a class="open" href="https://anish123619.github.io/web-programming/team-project/team-project.html" target="_blank" rel="noopener noreferrer">Web-programming github link.</a>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>&copy; 2026 Tamang Anish</footer>
+    </div>
 
 </body>
 </html>
